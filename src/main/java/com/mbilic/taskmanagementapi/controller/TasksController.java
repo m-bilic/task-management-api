@@ -7,15 +7,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.mbilic.taskmanagementapi.dto.Task;
+import com.mbilic.taskmanagementapi.service.TaskService;
 
 @RestController
 @RequestMapping("tasks")
 public class TasksController {
-	@GetMapping(path = "/predefined", produces = "application/json") 
-	public List<Task> getGreetingMessage(){
-		List<Task> ret = List.of(new Task("Create a Hello Endpoint"),
-				new Task("Create a Task class"));
-		
-		return ret;
+	final TaskService taskService;
+	
+	public TasksController(TaskService taskService) {
+		this.taskService = taskService;
+	}
+	
+	@GetMapping(path = "", produces = "application/json") 
+	public List<Task> getTasks(){
+		return taskService.getTasks();		
 	}
 }

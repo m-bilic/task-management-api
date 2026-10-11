@@ -22,16 +22,17 @@ public class TaskmanagementapiApplication {
 	@Bean
 	public CommandLineRunner demo(TaskRepository repository) {
 		return (args) -> {
-			repository.save(new Task("Create a Hello endpoint"));
-			repository.save(new Task("Create a Task class"));
-			repository.save(new Task("Add the database"));
-			repository.save(new Task("Create the service layer"));
-			repository.save(new Task("Create the endpoints"));
-			repository.save(new Task("Create request and response DTOs"));
-			repository.save(new Task("Implement validation"));
-			repository.save(new Task("Exception handling"));
-			repository.save(new Task("Add User and Project entities"));
-			repository.save(new Task("Configuration and polish"));
+			/*
+			 * repository.save(new Task("Create a Hello endpoint")); repository.save(new
+			 * Task("Create a Task class")); repository.save(new Task("Add the database"));
+			 * repository.save(new Task("Create the service layer")); repository.save(new
+			 * Task("Create the endpoints")); repository.save(new
+			 * Task("Create request and response DTOs")); repository.save(new
+			 * Task("Implement validation")); repository.save(new
+			 * Task("Exception handling")); repository.save(new
+			 * Task("Add User and Project entities")); repository.save(new
+			 * Task("Configuration and polish"));
+			 */
 			
 			logger.info("Tasks found with findAll():");
             logger.info("-------------------------------");
@@ -49,7 +50,7 @@ public class TaskmanagementapiApplication {
 
             // fetch task by last title
             logger.info("Task found with findByTitle('Configuration and polish'):");
-            logger.info("--------------------------------------------");
+            logger.info("--------------------------------");
             repository.findByTitle("Configuration and polish").forEach(configAndPolish -> {
                 logger.info(configAndPolish.toString());
             });
