@@ -42,7 +42,7 @@ public class TaskmanagementapiApplication {
             logger.info("");
             
             // fetch an individual task by ID
-            Task task = repository.findById(1L);
+            Task task = repository.findById(1L).orElseThrow();
             logger.info("Task found with findById(1L):");
             logger.info("--------------------------------");
             logger.info(task.toString());

@@ -12,6 +12,11 @@ public class Task {
 		this.title = title;
 	}
 	
+	public Task(String id, String title) {
+		super();
+		this.title = title;
+	}
+	
 	protected Task() {
 		super();
 	}
