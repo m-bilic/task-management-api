@@ -9,7 +9,7 @@ import com.mbilic.taskmanagementapi.repository.TaskRepository;
 
 @Service
 public class TaskService {
-	final TaskRepository taskRepository;
+	private final TaskRepository taskRepository;
 	
 	public TaskService(TaskRepository taskRepository) {
 		this.taskRepository = taskRepository;
@@ -23,16 +23,16 @@ public class TaskService {
 		return taskRepository.findById(id).orElseThrow();
 	}
 	
-	public void createTask(String title) {
-		taskRepository.save(new Task(title));
+	public Task createTask(String title) {
+		return taskRepository.save(new Task(title));
 	}
 	
-	public void updateTask(long id, String title) {
-		taskRepository.findById(id)
+	public Task updateTask(long id, String title) {
+		return taskRepository.findById(id)
 			.map(existing -> {
 				existing.setTitle(title);
 				return taskRepository.save(existing);
-				});
+				}).orElseThrow();
 	}
 	
 	public void deleteTask(long id) {
