@@ -1,4 +1,4 @@
-package com.mbilic.taskmanagementapi.dto;
+package com.mbilic.taskmanagementapi.model.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

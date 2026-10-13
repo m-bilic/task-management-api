@@ -7,7 +7,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
-import com.mbilic.taskmanagementapi.dto.Task;
+import com.mbilic.taskmanagementapi.model.entity.Task;
 import com.mbilic.taskmanagementapi.repository.TaskRepository;
 
 @SpringBootApplication

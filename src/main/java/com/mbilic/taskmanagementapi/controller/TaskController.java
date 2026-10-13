@@ -16,15 +16,15 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.mbilic.taskmanagementapi.dto.Task;
+import com.mbilic.taskmanagementapi.model.entity.Task;
 import com.mbilic.taskmanagementapi.service.TaskService;
 
 @RestController
 @RequestMapping("tasks")
-public class TasksController {
+public class TaskController {
 	private final TaskService taskService;
 	
-	public TasksController(TaskService taskService) {
+	public TaskController(TaskService taskService) {
 		this.taskService = taskService;
 	}
 	
