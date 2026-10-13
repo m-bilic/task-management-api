@@ -15,7 +15,7 @@ public class Task {
 	protected Task() {
 		super();
 	}
-	
+
 	@Override
     public String toString() {
         return String.format(

@@ -16,7 +16,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.mbilic.taskmanagementapi.model.entity.Task;
+import com.mbilic.taskmanagementapi.model.dto.TaskRequestDto;
+import com.mbilic.taskmanagementapi.model.dto.TaskResponseDto;
 import com.mbilic.taskmanagementapi.service.TaskService;
 
 @RestController
@@ -29,25 +30,25 @@ public class TaskController {
 	}
 	
 	@GetMapping 
-	public ResponseEntity<List<Task>> getTasks(){
+	public ResponseEntity<List<TaskResponseDto>> getTasks(){
 		return ResponseEntity.ok(taskService.getTasks());		
 	}
 	
 	@GetMapping("/{id}") 
-	public ResponseEntity<Task> getTask(@PathVariable long id){
+	public ResponseEntity<TaskResponseDto> getTask(@PathVariable long id){
 		return ResponseEntity.ok(
 				taskService.getTask(id)
 				);	
 	}
 	
 	@PostMapping
-	public ResponseEntity<Task> postTask(@RequestBody Task task) {
-		Task resultTask = taskService.createTask(task.getTitle());
+	public ResponseEntity<TaskResponseDto> postTask(@RequestBody TaskRequestDto task) {
+		TaskResponseDto resultTask = taskService.createTask(task);
 		
 		URI uri = ServletUriComponentsBuilder
 				.fromCurrentRequest()
 				.path("/{id}")
-				.buildAndExpand(resultTask.getId())
+				.buildAndExpand(resultTask.id())
 				.toUri();
 		
 		return ResponseEntity.created(uri)
@@ -55,9 +56,9 @@ public class TaskController {
 	}
 	
 	@PutMapping("/{id}")
-	public ResponseEntity<Task> putTask(@PathVariable long id, @RequestBody Task task) {
+	public ResponseEntity<TaskResponseDto> putTask(@PathVariable long id, @RequestBody TaskRequestDto task) {
 		return ResponseEntity.ok(
-				taskService.updateTask(id, task.getTitle())
+				taskService.updateTask(id, task)
 				);	
 	}
 	

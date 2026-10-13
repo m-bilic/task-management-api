@@ -4,38 +4,50 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.mbilic.taskmanagementapi.mapper.TaskMapper;
+import com.mbilic.taskmanagementapi.model.dto.TaskRequestDto;
+import com.mbilic.taskmanagementapi.model.dto.TaskResponseDto;
 import com.mbilic.taskmanagementapi.model.entity.Task;
 import com.mbilic.taskmanagementapi.repository.TaskRepository;
 
 @Service
 public class TaskService {
 	private final TaskRepository taskRepository;
-	
+
 	public TaskService(TaskRepository taskRepository) {
 		this.taskRepository = taskRepository;
 	}
-	
-	public List<Task> getTasks() {
-		return taskRepository.findAll();
+
+	public List<TaskResponseDto> getTasks() {
+		return taskRepository.findAll().stream()
+				.map(TaskMapper::toDto).toList();
 	}
-	
-	public Task getTask(long id) {
-		return taskRepository.findById(id).orElseThrow();
+
+	public TaskResponseDto getTask(long id) {
+		return TaskMapper.toDto(
+				taskRepository.findById(id)
+				.orElseThrow()
+				);
 	}
-	
-	public Task createTask(String title) {
-		return taskRepository.save(new Task(title));
+
+	public TaskResponseDto createTask(TaskRequestDto taskDto) {
+		return TaskMapper.toDto(
+				taskRepository.save(
+						TaskMapper.toEntity(taskDto)
+						)
+				);
 	}
-	
-	public Task updateTask(long id, String title) {
-		return taskRepository.findById(id)
-			.map(existing -> {
-				existing.setTitle(title);
-				return taskRepository.save(existing);
-				}).orElseThrow();
+
+	public TaskResponseDto updateTask(long id, TaskRequestDto taskDto) {
+		Task task = taskRepository.findById(id).orElseThrow();
+		task.setTitle(taskDto.title());
+		
+		return TaskMapper.toDto(taskRepository.save(task));
 	}
-	
+
 	public void deleteTask(long id) {
-		taskRepository.deleteById(id);
+		Task task = taskRepository.findById(id).orElseThrow();
+		
+		taskRepository.delete(task);
 	}
 }
