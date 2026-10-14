@@ -20,6 +20,8 @@ import com.mbilic.taskmanagementapi.model.dto.TaskRequestDto;
 import com.mbilic.taskmanagementapi.model.dto.TaskResponseDto;
 import com.mbilic.taskmanagementapi.service.TaskService;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("tasks")
 public class TaskController {
@@ -42,7 +44,8 @@ public class TaskController {
 	}
 	
 	@PostMapping
-	public ResponseEntity<TaskResponseDto> postTask(@RequestBody TaskRequestDto task) {
+	public ResponseEntity<TaskResponseDto> postTask(
+			@Valid @RequestBody TaskRequestDto task) {
 		TaskResponseDto resultTask = taskService.createTask(task);
 		
 		URI uri = ServletUriComponentsBuilder
@@ -56,7 +59,9 @@ public class TaskController {
 	}
 	
 	@PutMapping("/{id}")
-	public ResponseEntity<TaskResponseDto> putTask(@PathVariable long id, @RequestBody TaskRequestDto task) {
+	public ResponseEntity<TaskResponseDto> putTask(
+			@PathVariable long id, 
+			@Valid @RequestBody TaskRequestDto task) {
 		return ResponseEntity.ok(
 				taskService.updateTask(id, task)
 				);	
