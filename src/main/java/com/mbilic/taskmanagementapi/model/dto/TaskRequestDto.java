@@ -1,3 +1,3 @@
 package com.mbilic.taskmanagementapi.model.dto;
 
-public record TaskRequestDto (long id, String title) {}
+public record TaskRequestDto (String title) {}

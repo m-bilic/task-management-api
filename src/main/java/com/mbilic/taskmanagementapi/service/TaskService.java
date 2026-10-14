@@ -24,18 +24,17 @@ public class TaskService {
 	}
 
 	public TaskResponseDto getTask(long id) {
-		return TaskMapper.toDto(
-				taskRepository.findById(id)
-				.orElseThrow()
-				);
+		return taskRepository.findById(id)
+				.map(TaskMapper::toDto)
+				.orElseThrow();
+
 	}
 
 	public TaskResponseDto createTask(TaskRequestDto taskDto) {
-		return TaskMapper.toDto(
-				taskRepository.save(
-						TaskMapper.toEntity(taskDto)
-						)
-				);
+		Task task = TaskMapper.toEntity(taskDto);
+		task = taskRepository.save(task);
+		
+		return TaskMapper.toDto(task);
 	}
 
 	public TaskResponseDto updateTask(long id, TaskRequestDto taskDto) {
