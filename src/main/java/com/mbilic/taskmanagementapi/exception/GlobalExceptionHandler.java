@@ -1,5 +1,6 @@
 package com.mbilic.taskmanagementapi.exception;
 
+import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.http.HttpStatus;
@@ -8,6 +9,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import com.mbilic.taskmanagementapi.model.dto.ErrorDto;
 import com.mbilic.taskmanagementapi.model.dto.ErrorResponseDto;
 
 @RestControllerAdvice
@@ -17,13 +19,15 @@ public class GlobalExceptionHandler {
 	public ResponseEntity<ErrorResponseDto> handleInvalidRequestArguments (
 			MethodArgumentNotValidException ex) {
 		
-		String message = ex.getAllErrors().stream()
-				.map(e -> e.getDefaultMessage())
-				.collect(Collectors.joining(", "));
+		List<ErrorDto> errors = ex.getFieldErrors().stream()
+				.map(e -> new ErrorDto(e.getField(),
+						e.getDefaultMessage()))
+				.toList();
 		
 		return new ResponseEntity<>(new ErrorResponseDto(
 				HttpStatus.BAD_REQUEST.value(),
-				message), 
+				"Invalid request",
+				errors), 
 			HttpStatus.BAD_REQUEST);
 	}
 	
@@ -32,7 +36,8 @@ public class GlobalExceptionHandler {
 			TaskNotFoundException ex) {
 		return new ResponseEntity<>(
 				new ErrorResponseDto(HttpStatus.NOT_FOUND.value(), 
-						ex.getMessage()),
+						ex.getMessage(),
+						null),
 				HttpStatus.NOT_FOUND);
 	}
 }
