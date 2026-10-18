@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.mbilic.taskmanagementapi.exception.TaskNotFoundException;
 import com.mbilic.taskmanagementapi.mapper.TaskMapper;
 import com.mbilic.taskmanagementapi.model.dto.TaskRequestDto;
 import com.mbilic.taskmanagementapi.model.dto.TaskResponseDto;
@@ -26,7 +27,7 @@ public class TaskService {
 	public TaskResponseDto getTask(long id) {
 		return taskRepository.findById(id)
 				.map(TaskMapper::toDto)
-				.orElseThrow();
+				.orElseThrow(() -> new TaskNotFoundException(id));
 
 	}
 
@@ -38,14 +39,17 @@ public class TaskService {
 	}
 
 	public TaskResponseDto updateTask(long id, TaskRequestDto taskDto) {
-		Task task = taskRepository.findById(id).orElseThrow();
+		Task task = taskRepository.findById(id)
+				.orElseThrow(() -> new TaskNotFoundException(id));
+		
 		task.setTitle(taskDto.title());
 		
 		return TaskMapper.toDto(taskRepository.save(task));
 	}
 
 	public void deleteTask(long id) {
-		Task task = taskRepository.findById(id).orElseThrow();
+		Task task = taskRepository.findById(id)
+				.orElseThrow(() -> new TaskNotFoundException(id));
 		
 		taskRepository.delete(task);
 	}
