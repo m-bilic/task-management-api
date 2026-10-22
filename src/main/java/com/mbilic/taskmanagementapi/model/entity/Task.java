@@ -7,6 +7,13 @@ import jakarta.persistence.Id;
 
 @Entity
 public class Task {
+	
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	private Long id;
+	
+	private String title;
+	
 	public Task(String title) {
 		super();
 		this.title = title;
@@ -22,12 +29,6 @@ public class Task {
                 "Task[id=%d, title='%s']",
                 id, title);
     }
-	
-	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private Long id;
-	
-	private String title;
 	
 	public Long getId() {
 		return id;
