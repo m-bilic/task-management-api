@@ -1,11 +1,16 @@
 package com.mbilic.taskmanagementapi.model.dto;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 public record TaskRequestDto (
 			@NotBlank(message="Title is not optional")
 			@Size(min=4, message="Title needs to be at least 4 characters")
 			@Size(max=255, message="Title cannot exceed 255 characters")
-			String title
+			String title,
+			@NotNull
+			Long projectId,
+			@NotNull
+			Long assigneeId
 		) {}

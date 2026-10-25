@@ -29,9 +29,9 @@ public class GlobalExceptionHandler {
 			HttpStatus.BAD_REQUEST);
 	}
 	
-	@ExceptionHandler(TaskNotFoundException.class)
+	@ExceptionHandler(ResourceNotFoundException.class)
 	public ResponseEntity<ErrorResponseDto> handleNotFoundException (
-			TaskNotFoundException ex) {
+			ResourceNotFoundException ex) {
 		return new ResponseEntity<>(
 				new ErrorResponseDto(HttpStatus.NOT_FOUND.value(), 
 						ex.getMessage(),

@@ -4,19 +4,30 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.mbilic.taskmanagementapi.exception.TaskNotFoundException;
+import com.mbilic.taskmanagementapi.exception.ResourceNotFoundException;
 import com.mbilic.taskmanagementapi.mapper.TaskMapper;
 import com.mbilic.taskmanagementapi.model.dto.TaskRequestDto;
 import com.mbilic.taskmanagementapi.model.dto.TaskResponseDto;
+import com.mbilic.taskmanagementapi.model.entity.AppUser;
+import com.mbilic.taskmanagementapi.model.entity.Project;
 import com.mbilic.taskmanagementapi.model.entity.Task;
+import com.mbilic.taskmanagementapi.repository.AppUserRepository;
+import com.mbilic.taskmanagementapi.repository.ProjectRepository;
 import com.mbilic.taskmanagementapi.repository.TaskRepository;
 
 @Service
 public class TaskService {
 	private final TaskRepository taskRepository;
+	private final ProjectRepository projectRepository;
+	private final AppUserRepository userRepository;
+	
 
-	public TaskService(TaskRepository taskRepository) {
+	public TaskService(TaskRepository taskRepository, 
+			ProjectRepository projectRepository,
+			AppUserRepository userRepository) {
 		this.taskRepository = taskRepository;
+		this.projectRepository = projectRepository;
+		this.userRepository = userRepository;
 	}
 
 	public List<TaskResponseDto> getTasks() {
@@ -32,16 +43,24 @@ public class TaskService {
 	}
 
 	public TaskResponseDto createTask(TaskRequestDto taskDto) {
-		Task task = TaskMapper.toEntity(taskDto);
+		AppUser assignee = findAppUserOrThrow(taskDto.assigneeId());
+		Project project = findProjectOrThrow(taskDto.projectId());
+		
+		Task task = TaskMapper.toEntity(taskDto, project, assignee);
 		task = taskRepository.save(task);
 		
 		return TaskMapper.toDto(task);
 	}
 
 	public TaskResponseDto updateTask(long id, TaskRequestDto taskDto) {
+		AppUser assignee = findAppUserOrThrow(taskDto.assigneeId());
+		Project project = findProjectOrThrow(taskDto.projectId());
+		
 		Task task = findTaskOrThrow(id);
 		
 		task.setTitle(taskDto.title());
+		task.setAssignee(assignee);
+		task.setProject(project);
 		
 		return TaskMapper.toDto(taskRepository.save(task));
 	}
@@ -54,6 +73,16 @@ public class TaskService {
 	
 	private Task findTaskOrThrow(long id) {
 		return taskRepository.findById(id)
-				.orElseThrow(() -> new TaskNotFoundException(id));
+				.orElseThrow(() -> new ResourceNotFoundException(Task.class, id));
+	}
+	
+	private AppUser findAppUserOrThrow(long id) {
+		return userRepository.findById(id)
+				.orElseThrow(() -> new ResourceNotFoundException(AppUser.class, id));
+	}
+	
+	private Project findProjectOrThrow(long id) {
+		return projectRepository.findById(id)
+				.orElseThrow(() -> new ResourceNotFoundException(Project.class, id));
 	}
 }

@@ -8,5 +8,5 @@ import com.mbilic.taskmanagementapi.model.entity.AppUser;
 import com.mbilic.taskmanagementapi.model.entity.Task;
 
 public interface AppUserRepository extends ListCrudRepository<AppUser, Long> {
-	List<Task> findByTitle(String title);
+	List<AppUser> findByName(String name);
 }
