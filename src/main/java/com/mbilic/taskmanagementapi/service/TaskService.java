@@ -53,10 +53,10 @@ public class TaskService {
 	}
 
 	public TaskResponseDto updateTask(long id, TaskRequestDto taskDto) {
+		Task task = findTaskOrThrow(id);
+		
 		AppUser assignee = findAppUserOrThrow(taskDto.assigneeId());
 		Project project = findProjectOrThrow(taskDto.projectId());
-		
-		Task task = findTaskOrThrow(id);
 		
 		task.setTitle(taskDto.title());
 		task.setAssignee(assignee);

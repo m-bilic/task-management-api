@@ -24,8 +24,8 @@ public class Task {
 	private AppUser assignee;
 	
 	public Task(String title, 
-			@NotNull Project project, 
-			@NotNull AppUser user) {
+			Project project, 
+			AppUser user) {
 		super();
 		this.title = title;
 		this.project = project;

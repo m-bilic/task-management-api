@@ -4,5 +4,5 @@ public record TaskResponseDto (
 			Long id, 
 			String title, 
 			Long projectId, 
-			Long asigneeId
+			Long assigneeId
 		) {}
